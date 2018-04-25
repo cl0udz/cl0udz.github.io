@@ -345,7 +345,7 @@ Python部分：
 def rewritesrc(funcname):
     ss = ""
     argNum = funcname.count(":")
-    ss = src + "setTimeout(function(){{hookObjC(\"{0}\", {1})}}, 0);".format(funcname, argNum)
+    ss = src + "setTimeout(function()\{\{hookObjC(\"{0}\", {1})\}\}, 0);".format(funcname, argNum)
 
     return ss
 
