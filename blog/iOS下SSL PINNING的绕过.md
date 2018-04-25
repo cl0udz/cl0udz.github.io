@@ -159,7 +159,7 @@ if __name__ == '__main__':
 
 > `python fast_hook_ret_replace_objc.py '-[NSURLProtectionSpace serverTrust]'`
 
-## 0x3 AFSecurityPolicy evaluateServerTrust:forDomain:
+## 0x3 AFSecurityPolicy evaluateServerTrust: forDomain:
 测试对象：微众银行（版本：2.4.3（606））
 
 #### 分析过程
@@ -189,13 +189,13 @@ LABEL_42:
 #### 绕过方法
 直接用frida修改返回值为1，代码和上面一模一样就不再贴了。只需要把`retval.replace(0)`改成`retval.replace(1)`，然后把函数名换掉就行了。
 
->`python fast_hook_ret_replace_objc.py '-[PodWebankSDK_AFSecurityPolicy evaluateServerTrust:forDomain:]'`
+>`python fast_hook_ret_replace_objc.py '-[PodWebankSDK_AFSecurityPolicy evaluateServerTrust\:forDomain:]'`
 
 ## 0x4 非0/1实现
 测试对象：云闪付（版本：v5.0.5）
 
 通过一些花里胡哨的办法（hook serverTrust打印调用栈），我们找到了他的证书验证函数。
-`-[MKNetworkOperation connection:willSendRequestForAuthenticationChallenge:]`
+`-[MKNetworkOperation connection\:willSendRequestForAuthenticationChallenge:]`
 
 #### 分析过程
 
