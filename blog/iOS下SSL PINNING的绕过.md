@@ -137,7 +137,9 @@ python部分：
 def rewritesrc():
     ss = ""
     argNum = '-[NSURLProtectionSpace serverTrust]'.count(":")
-    ss = src + "setTimeout(function()\{\{hookObjC(\"-[NSURLProtectionSpace serverTrust]\", {0})\}\}, 0);".format(argNum)
+    ss = src + "setTimeout(function(){"
+    ss = ss + "{hookObjC(\"-[NSURLProtectionSpace serverTrust]\", {0})}".format(argNum)
+    ss = ss + "}, 0);"
     return ss
 
 def main():
@@ -163,7 +165,7 @@ if __name__ == '__main__':
 测试对象：微众银行（版本：2.4.3（606））
 
 #### 分析过程
-这个验证方法是AF库里面实现的，在微众银行下面把他稍作修改纳入到自己的SDK中了，具体代码直接搜索函数`-[PodWebankSDK_AFSecurityPolicy evaluateServerTrust:forDomain:]`就可以看到。
+这个验证方法是AF库里面实现的，在微众银行下面把他稍作修改纳入到自己的SDK中了，具体代码直接搜索函数`-[PodWebankSDK_AFSecurityPolicy evaluateServerTrust: forDomain:]`就可以看到。
 
 分析这个函数逻辑，发现一个有趣的东西。为了提供对更多场景的支持，代码中加入了一个`allowInvalidCertificates`的项，使用的逻辑如下述代码所示（代码来自IDA F5）
 
@@ -189,13 +191,13 @@ LABEL_42:
 #### 绕过方法
 直接用frida修改返回值为1，代码和上面一模一样就不再贴了。只需要把`retval.replace(0)`改成`retval.replace(1)`，然后把函数名换掉就行了。
 
->`python fast_hook_ret_replace_objc.py '-[PodWebankSDK_AFSecurityPolicy evaluateServerTrust\:forDomain:]'`
+>`python fast_hook_ret_replace_objc.py '-[PodWebankSDK_AFSecurityPolicy evaluateServerTrust: forDomain:]'`
 
 ## 0x4 非0/1实现
 测试对象：云闪付（版本：v5.0.5）
 
 通过一些花里胡哨的办法（hook serverTrust打印调用栈），我们找到了他的证书验证函数。
-`-[MKNetworkOperation connection\:willSendRequestForAuthenticationChallenge:]`
+`-[MKNetworkOperation connection: willSendRequestForAuthenticationChallenge:]`
 
 #### 分析过程
 
